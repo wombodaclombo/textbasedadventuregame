@@ -1,30 +1,40 @@
 import json
 
 from datetime import datetime
+import os
 from characters.character import Character
 from locations.location import Location
+from config import ROOT_DIR
 
 class GameSession():
     def __init__(self, path: str = "", location: str = "") -> None:
         if not path:
             # create a new game session
-            # TODO: set location
+        
             self.location = Location(location)
             print("location created")
-            # TODO: set character
+            
             self.character = Character()
             print("character created")
             # TODO: Create a game save file in /saves with filename "DATETIME-character-name.json"
-            # self.saveGame()
+            self.saveGame()
         else:
             print("not yet implemented")
             # self.character = Character()
 
+    # TODO: Add minutes to save game file names to avoid duplicate file names
     def saveGame(self): 
         now =  datetime.now()
         name = self.character.name
-        filename = "/saves/" + now.strftime('%Y-%m-%d-%H-%M') + "-" + name # /saves/2024-01-13-stupidface.json
+        filename = now.strftime('%Y-%m-%d-%H-%M') + "-" + name + ".json" # /saves/2024-01-13-stupidface.json
         print(filename)
-        # with open(filename) as f:
-        #     data = self.__dict__
-        #     json.dump(data, f)
+        session_data = self.to_dict()
+        file_path = os.path.join(ROOT_DIR, "saves", filename)
+        with open(file_path , "a+") as f:
+            json.dump(session_data, f)
+
+    def to_dict(self):
+        dict = self.__dict__
+        dict["character"] = self.character.__dict__
+        dict["location"] = self.location.__dict__
+        return dict
