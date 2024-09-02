@@ -19,8 +19,8 @@ class GameSession():
             # TODO: Create a game save file in /saves with filename "DATETIME-character-name.json"
             self.saveGame()
         else:
-            print("not yet implemented")
-            # self.character = Character()
+            # if there is a path then
+            self.loadGame(ROOT_DIR+ "/saves/"+ path)
 
     # TODO: Add minutes to save game file names to avoid duplicate file names
     def saveGame(self): 
@@ -30,8 +30,18 @@ class GameSession():
         print(filename)
         session_data = self.to_dict()
         file_path = os.path.join(ROOT_DIR, "saves", filename)
-        with open(file_path , "a+") as f:
+        with open(file_path , "x") as f:
             json.dump(session_data, f)
+
+    def loadGame(self, path: str):
+        print("path", path)
+        # load save game json file
+        with open(path, "r") as f:
+            data = json.loads(f)
+        # extract the character data into this file
+        self.character = Character(characterKey=data.character.name, art=data.character.art, description=data.character.description)
+        # extract location data
+        self.location = Location(data.location.name)
 
     def to_dict(self):
         dict = self.__dict__

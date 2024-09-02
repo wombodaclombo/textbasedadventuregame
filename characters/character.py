@@ -2,7 +2,14 @@ import json
 import os
 
 class Character():
-    def __init__(self, characterKey: str = "unknown") -> None:
+    def __init__(self, characterKey: str = "", art: str = "", description: str = "" ) -> None:
+        if not characterKey:
+            self.loadCharacterFromKey("unknown")
+        else:
+            self.loadCharacterFromKey(characterKey)
+        print(self)
+    
+    def loadCharacterFromKey(self, characterKey):
         file_path = 'character\character.json'
         if os.path.exists(file_path):
             with open(file_path, 'r') as file:
@@ -13,11 +20,10 @@ class Character():
             self.name = characterKey.capitalize()
             self.description = characterData['description']
         else:
-            self.name = characterKey
+            self.name = characterKey.capitalize()
             self.description = ""
             self.art = ""
-        print(self)
-    
+
     def printArt(self) -> None:
         print(self.art)
 

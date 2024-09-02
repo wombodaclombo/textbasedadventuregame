@@ -2,13 +2,14 @@ import json
 
 class Location():
     def __init__(self, locationKey: str) -> None:
-        with open('locations/locations.json', 'r') as file:
-            data = json.load(file)
-            locationData: dict[str, dict] = data[locationKey]
-        with open(locationData['art'], 'r') as l:
-            self.art = l.read()
-        self.name = locationKey.capitalize()
-        self.description = locationData['description']
+        if locationKey:    
+            with open('locations/locations.json', 'r') as file:
+                data = json.load(file)
+                locationData: dict[str, dict] = data[locationKey]
+            with open(locationData['art'], 'r') as l:
+                self.art = l.read()
+            self.name = locationKey.capitalize()
+            self.description = locationData['description']
     
     def printArt(self) -> None:
         print(self.art)
