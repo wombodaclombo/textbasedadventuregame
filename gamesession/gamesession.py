@@ -7,16 +7,11 @@ from locations.location import Location
 from config import ROOT_DIR
 
 class GameSession():
-    def __init__(self, path: str = "", location: str = "") -> None:
+    def __init__(self, path: str = "") -> None:
         if not path:
             # create a new game session
-        
-            self.location = Location(location)
-            print("location created")
-            
-            self.character = Character()
-            print("character created")
-            # TODO: Create a game save file in /saves with filename "DATETIME-character-name.json"
+            self.location = Location()
+            self.character = Character()    
             self.saveGame()
         else:
             # if there is a path then

@@ -1,15 +1,20 @@
 import json
 
-class Location():
-    def __init__(self, locationKey: str) -> None:
-        if locationKey:    
-            with open('locations/locations.json', 'r') as file:
-                data = json.load(file)
-                locationData: dict[str, dict] = data[locationKey]
-            with open(locationData['art'], 'r') as l:
-                self.art = l.read()
-            self.name = locationKey.capitalize()
+class  Location():
+    def __init__(self, locationKey: str = None) -> None:
+        if locationKey:
+            self.loadLocationData(locationKey)
+        else:
+            self.loadLocationData()
+
+    def loadLocationData(self, locationKey: str = "prison") -> None:
+        self.name = locationKey.capitalize()
+        with open('locations/locations.json', 'r') as file:
+            data = json.load(file)
+            locationData: dict[str, dict] = data[locationKey]
             self.description = locationData['description']
+        with open(locationData['art'], 'r') as l:
+            self.art = l.read()
     
     def printArt(self) -> None:
         print(self.art)
